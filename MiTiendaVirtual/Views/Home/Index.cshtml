@@ -1,0 +1,23 @@
+@model IEnumerable<ModuloInicio>
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<section class="home-intro">
+    <h1>Administración de la tienda</h1>
+    <p>Elija una opción para consultar los registros y crear, modificar o eliminar.</p>
+</section>
+
+<div class="modules">
+    @foreach (var m in Model)
+    {
+        <a asp-controller="@m.Controlador" asp-action="Index" class="module @(m.Controlador == "Pedidos" ? "module-lead" : "")">
+            <i class="bi @m.Icono module-icon"></i>
+            <span class="module-body">
+                <span class="module-title">@m.Titulo</span>
+                <span class="module-desc">@m.Descripcion</span>
+            </span>
+            <span class="module-count" title="@m.Total registros">@m.Total</span>
+        </a>
+    }
+</div>

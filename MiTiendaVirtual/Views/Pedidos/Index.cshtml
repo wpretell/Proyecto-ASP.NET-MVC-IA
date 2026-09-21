@@ -1,0 +1,52 @@
+@model IEnumerable<MiTiendaVirtual.Models.Pedido>
+@{
+    ViewData["Title"] = "Pedidos";
+}
+
+<div class="page-head">
+    <div>
+        <h1 class="page-title"><i class="bi bi-receipt"></i>Pedidos</h1>
+        <p class="page-sub">Pedidos de los clientes con su detalle de productos.</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Nuevo pedido</a>
+</div>
+
+<div class="card panel">
+    <div class="card-body">
+        <table class="table table-hover align-middle grid w-100">
+            <thead>
+                <tr>
+                    <th>Nº</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Tarjeta</th>
+                    <th>Estado</th>
+                    <th>Total</th>
+                    <th class="text-end">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td data-order="@item.FechaHora.Ticks">@item.FechaHora.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@(item.Cliente?.Nombres) @(item.Cliente?.Apellidos)</td>
+                        <td>@(item.Tarjeta?.Marca) @Formato.Ocultar(item.Tarjeta?.Numero)</td>
+                        <td><span class="badge @Formato.ClaseEstado(item.Estado)">@item.Estado</span></td>
+                        <td class="text-end" data-order="@item.Total">@item.Total.ToString("N2")</td>
+                        <td class="text-end text-nowrap">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-secondary" title="Ver detalle"><i class="bi bi-eye"></i></a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
+                            <button type="button" class="btn btn-sm btn-outline-danger" title="Eliminar"
+                                    data-delete-url="@Url.Action("Delete", new { id = item.Id })"
+                                    data-nombre="Pedido #@item.Id">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

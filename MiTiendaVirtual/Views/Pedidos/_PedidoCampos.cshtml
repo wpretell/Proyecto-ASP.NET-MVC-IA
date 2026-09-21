@@ -1,0 +1,79 @@
+@model PedidoViewModel
+
+<div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+<input type="hidden" asp-for="Id" />
+
+<div class="card panel">
+    <div class="card-body">
+        <h2 class="section-title">Datos del pedido</h2>
+        <div class="row g-3">
+            <div class="col-md-6 col-xl-4">
+                <label asp-for="IdCliente" class="form-label"></label>
+                <select asp-for="IdCliente" asp-items="ViewBag.Clientes" class="form-select">
+                    <option value="">-- Seleccione --</option>
+                </select>
+                <span asp-validation-for="IdCliente" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <label asp-for="IdTarjeta" class="form-label"></label>
+                <select asp-for="IdTarjeta" asp-items="ViewBag.Tarjetas" class="form-select">
+                    <option value="">-- Seleccione --</option>
+                </select>
+                <span asp-validation-for="IdTarjeta" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <label asp-for="FechaHora" class="form-label"></label>
+                <input asp-for="FechaHora" type="datetime-local" class="form-control" />
+                <span asp-validation-for="FechaHora" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6 col-xl-2">
+                <label asp-for="Estado" class="form-label"></label>
+                <select asp-for="Estado" asp-items="ViewBag.Estados" class="form-select"></select>
+                <span asp-validation-for="Estado" class="text-danger small"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card panel mt-3">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="section-title mb-0">Detalle del pedido</h2>
+            <button type="button" class="btn btn-sm btn-outline-primary" id="btnAgregar">
+                <i class="bi bi-plus-lg me-1"></i>Agregar producto
+            </button>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table align-middle detalle-table">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th class="col-cant">Cantidad</th>
+                        <th class="col-precio">Precio unitario</th>
+                        <th class="col-sub text-end">Subtotal</th>
+                        <th class="col-quitar"></th>
+                    </tr>
+                </thead>
+                <tbody id="detalleBody"></tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="3" class="text-end">Total del pedido</th>
+                        <th class="text-end total-pedido" id="totalPedido">0.00</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <p id="detalleVacio" class="text-muted small mb-0" hidden>
+            Este pedido todavía no tiene productos. Use «Agregar producto».
+        </p>
+    </div>
+</div>
+
+<div class="form-actions">
+    <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Guardar pedido</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancelar</a>
+</div>
+
+<script id="pedido-data" type="application/json">@Json.Serialize(new { productos = Model.Productos, detalles = Model.Detalles })</script>
